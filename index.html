@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Tamil Movie List</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paymentfont/1.2.5/css/paymentfont.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.css">
+    <link rel="stylesheet" href="main.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="icon/favicon-32x32.png">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Dmitry Volkov">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFPDFK8N4V"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-RFPDFK8N4V');
+    </script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            padding-bottom: 60px; /* Space for bottom tabs */
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-bar input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease;
+        }
+
+        .search-bar input[type="text"]:focus {
+            width: 70%;
+            outline: none;
+        }
+
+        .album {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .album:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .album__cover {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 300px; /* Fixed height for the image */
+            transition: opacity 0.3s ease;
+        }
+
+        .album__cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Make sure the image covers the entire div */
+            transition: opacity 0.3s ease;
+        }
+
+        .album__cover:hover img {
+            opacity: 0.7; /* Fade color */
+        }
+
+        .album__cover a {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .album__cover a svg {
+            fill: white;
+            width: 24px;
+            height: 24px;
+        }
+
+        .album__cover:hover a {
+            opacity: 1;
+        }
+
+        .album__title h3 {
+            font-size: 16px; /* Standard font size */
+            margin: 10px 0;
+            padding: 0 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Limit title size */
+            color: black; /* Text color */
+            font-weight: bold; /* Make text bold */
+        }
+
+        .album__title h3 a {
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Inherit color from parent */
+        }
+
+        .favorite-heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .favorite-heart:hover {
+            opacity: 1;
+        }
+
+        .favorite-heart.favorite {
+            filter: invert(100%); /* Change to black */
+        }
+
+        .bottom-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .bottom-tabs a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .bottom-tabs a:hover {
+            color: #0056b3;
+        }
+
+        .bottom-tabs a .icon {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 24px; /* Modern icon size */
+        }
+
+        .share-popup {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .share-popup a {
+            display: block;
+            margin: 5px 0;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .share-popup a:hover {
+            color: #0056b3;
+        }
+
+        .load-more {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .load-more button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .load-more button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search movies...">
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div class="container-fluid">
+            <!-- Releases -->
+            <div class="row row--grid" id="test"></div>    
+        </div>
+        <!-- Load More Button -->
+        <div class="load-more">
+            <button id="load-more-button">Load More</button>
+        </div>
+    </main>
+    <!-- End Main Content -->
+
+    <!-- Bottom Tabs -->
+    <div class="bottom-tabs">
+        <a href="#" id="home-tab">
+            <i class="icon fas fa-home"></i>
+            Home
+        </a>
+        <a href="#" id="favorites-tab">
+            <i class="icon fas fa-heart"></i>
+            Favorites
+        </a>
+        <a href="#" id="share-tab">
+            <i class="icon fas fa-share-alt"></i>
+            Share
+        </a>
+    </div>
+
+    <!-- Share Popup -->
+    <div class="share-popup" id="share-popup">
+        <a href="https://wa.me/?text=Check%20out%20this%20website!" target="_blank">WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://your-website.com" target="_blank">Facebook</a>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollbar/0.2.11/smooth-scrollbar.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.js" defer></script>
+    <script src="main.js" defer></script>
+    
+    <script>
+        function readTextFile(file) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.overrideMimeType("application/json");
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4 && rawFile.status === 200) {
+                    movies = JSON.parse(rawFile.responseText);
+                }
+            }
+            rawFile.send(null);
+        }
+
+        var movies = [];
+        var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        var moviesPerPage = 50;
+        var currentPage = 1;
+
+        function displayMovies(movies, page) {
+            var start = (page - 1) * moviesPerPage;
+            var end = start + moviesPerPage;
+            var moviesToDisplay = movies.slice(start, end);
+
+            jQuery.each(moviesToDisplay, function (index, movie) {
+                var isFavorite = favorites.includes(movie.id) ? 'favorite' : '';
+                var Mdiv = 
+                `<div class="col-6 col-sm-4 col-lg-2">
+                    <div class="album">
+                        <div class="album__cover">
+                            <img src="https://multicinema.in/${movie.pic}" alt="Movie Image">
+                            <a href="https://multicinema.in/details.html?id=${movie.id}&target=external" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="album__title">
+                            <h3>
+                                <a href="https://peipadam.com/tml/release.php?id=${movie.id}&target=external" target="_blank">${movie.title}</a>
+                            </h3>
+                        </div>
+                        <img src="https://img.icons8.com/ios-filled/50/000000/like.png" class="favorite-heart ${isFavorite}" data-id="${movie.id}">
+                    </div>
+                </div>`;
+                $("#test").append(Mdiv);
+            });
+
+            // Hide the Load More button if there are no more movies to load
+            if (end >= movies.length) {
+                $('#load-more-button').hide();
+            } else {
+                $('#load-more-button').show();
+            }
+        }
+
+        function displayFavorites() {
+            $('#test').empty();
+            var favoriteMovies = movies.filter(movie => favorites.includes(movie.id));
+            displayMovies(favoriteMovies, 1);
+        }
+
+        $(document).ready(function() {
+            readTextFile("https://multicinema.in/movielist.json");
+
+            // Display the first batch of movies
+            displayMovies(movies, currentPage);
+
+            // Load more movies on button click
+            $('#load-more-button').on('click', function() {
+                currentPage++;
+                displayMovies(movies, currentPage);
+            });
+
+            // Search functionality
+            $('#search-input').on('input', function() {
+                var searchText = $(this).val().toLowerCase();
+                var filteredMovies = movies.filter(function(movie) {
+                    return movie.title.toLowerCase().includes(searchText);
+                });
+                $('#test').empty();
+                currentPage = 1;
+                displayMovies(filteredMovies, currentPage);
+            });
+
+            // Add to favorites
+            $(document).on('click', '.favorite-heart', function() {
+                var movieId = $(this).data('id');
+                if (favorites.includes(movieId)) {
+                    favorites = favorites.filter(id => id !== movieId);
+                    $(this).removeClass('favorite');
+                } else {
+                    favorites.push(movieId);
+                    $(this).addClass('favorite');
+                }
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+            });
+
+            // Tab navigation
+            $('#home-tab').on('click', function() {
+                $('#main-content').show();
+                $('#test').empty();
+                displayMovies(movies, 1);
+            });
+
+            $('#favorites-tab').on('click', function() {
+                $('#main-content').show();
+                displayFavorites();
+            });
+
+            $('#share-tab').on('click', function() {
+                $('#share-popup').toggle();
+            });
+
+            $(document).click(function(event) {
+                if (!$(event.target).closest('#share-tab, #share-popup').length) {
+                    $('#share-popup').hide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
