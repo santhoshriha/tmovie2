@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,56 +38,129 @@
     </script>
 
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            padding-bottom: 60px; /* Space for bottom tabs */
-        }
+ body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    padding-bottom: 60px; /* Space for bottom tabs */
+}
 
-        .search-bar {
-            margin: 20px 0;
-            text-align: center;
-        }
+.search-bar {
+    margin: 20px 0;
+    text-align: center;
+}
 
-        .search-bar input[type="text"] {
-            width: 60%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ced4da;
-            border-radius: 50px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: width 0.3s ease;
-        }
+.search-bar input[type="text"] {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+}
 
-        .search-bar input[type="text"]:focus {
-            width: 70%;
-            outline: none;
-        }
+.search-bar input[type="text"]:focus {
+    width: 70%;
+    outline: none;
+}
 
-        .album {
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 5px; /* Reduce gap between images */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-        }
+.album {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 5px; /* Reduce gap between images */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
 
-        .album:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
+.album:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .album__cover {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            height: 250px; /* Fixed height for the image */
-            transition: opacity 0.3s ease;
-			
-        }
-		.delete-favorite {
+.album__cover {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 250px; /* Fixed height for the image */
+    transition: opacity 0.3s ease;
+}
+
+.album__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Make sure the image covers the entire div */
+    transition: opacity 0.3s ease;
+}
+
+.album__cover:hover img {
+    opacity: 0.7; /* Fade color */
+}
+
+.album__cover a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.album__cover a svg {
+    fill: white;
+    width: 24px;
+    height: 24px;
+}
+
+.album__cover:hover a {
+    opacity: 1;
+}
+
+.album__title h3 {
+    font-size: 16px; /* Standard font size */
+    margin: 10px 0;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Limit title size */
+    color: black; /* Text color */
+    font-weight: bold; /* Make text bold */
+}
+
+.album__title h3 a {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit color from parent */
+}
+
+.favorite-heart {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    opacity: 0.8;
+    filter: invert(100%);
+}
+
+.favorite-heart:hover {
+    opacity: 1;
+}
+
+.favorite-heart.favorite {
+    filter: none;
+    color: #007bff;
+}
+
+.delete-favorite {
     position: absolute;
     top: 10px;
     right: 40px;
@@ -94,182 +168,169 @@
     color: red;
 }
 
-        .album__cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Make sure the image covers the entire div */
-            transition: opacity 0.3s ease;
-        }
+.bottom-tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .album__cover:hover img {
-            opacity: 0.7; /* Fade color */
-        }
+.bottom-tabs a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .album__cover a {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(0, 0, 0, 0.5);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+.bottom-tabs a:hover {
+    color: #0056b3;
+}
 
-        .album__cover a svg {
-            fill: white;
-            width: 24px;
-            height: 24px;
-        }
+.bottom-tabs a .icon {
+    font-size: 24px; /* Modern icon size */
+    margin-bottom: 5px;
+}
 
-        .album__cover:hover a {
-            opacity: 1;
-        }
+.share-popup {
+    display: none;
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+}
 
-        .album__title h3 {
-            font-size: 16px; /* Standard font size */
-            margin: 10px 0;
-            padding: 0 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis; /* Limit title size */
-            color: black; /* Text color */
-            font-weight: bold; /* Make text bold */
-        }
+.share-popup a {
+    display: block;
+    margin: 5px 0;
+    color: #007bff;
+    text-decoration: none;
+}
 
-        .album__title h3 a {
-            text-decoration: none; /* Remove underline */
-            color: inherit; /* Inherit color from parent */
-        }
+.share-popup a:hover {
+    color: #0056b3;
+}
 
-        .favorite-heart {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            opacity: 0.8;
-        }
+.load-more {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
 
-        .favorite-heart:hover {
-            opacity: 1;
-        }
+.load-more button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        .favorite-heart.favorite {
-            filter: invert(100%); /* Change to white */
-        }
+.load-more button:hover {
+    background-color: #0056b3;
+}
 
-        .bottom-tabs {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            border-top: 1px solid #dee2e6;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-        }
+/* Media query for mobile view */
+@media (max-width: 767.98px) {
+    .col-6 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .album {
+        margin: 5px 0;
+    }
+}
 
-        .bottom-tabs a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 14px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.popup-message {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
 
-        .bottom-tabs a:hover {
-            color: #0056b3;
-        }
+#review-popup {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s;
+}
 
-        .bottom-tabs a .icon {
-            font-size: 24px; /* Modern icon size */
-            margin-bottom: 5px;
-        }
+#review-popup h4 {
+    margin-bottom: 15px;
+}
 
-        .share-popup {
-            display: none;
-            position: fixed;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #fff;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            text-align: center;
-        }
+#review-popup .stars {
+    margin-bottom: 15px;
+}
 
-        .share-popup a {
-            display: block;
-            margin: 5px 0;
-            color: #007bff;
-            text-decoration: none;
-        }
+#review-popup .stars i {
+    font-size: 24px;
+    color: #ffd700; /* Gold color for stars */
+    cursor: pointer;
+}
 
-        .share-popup a:hover {
-            color: #0056b3;
-        }
+#review-popup-close {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+}
 
-        .load-more {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
+#review-popup-close:hover {
+    color: #0056b3;
+}
 
-        .load-more button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .load-more button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Media query for mobile view */
-        @media (max-width: 767.98px) {
-            .col-6 {
-                padding-left: 5px;
-                padding-right: 5px;
-            }
-            .album {
-                margin: 5px 0;
-            }
-        }
-
-        .popup-message {
-            display: none;
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #000;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
     </style>
 </head>
 <body>
+<!-- Review Popup -->
+<div id="review-popup">
+    <h4>Rate Our App</h4>
+    <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+    </div>
+    <button id="go-to-play-store" class="btn btn-primary">Go to Play Store</button>
+    <br>
+    <a href="javascript:void(0);" id="review-popup-close">Close</a>
+</div>
     <!-- Search Bar -->
     <div class="search-bar">
         <input type="text" id="search-input" placeholder="Search movies...">
@@ -397,6 +458,15 @@ function showPopupMessage(message) {
     }, 2000); // Hide after 2 seconds
 }
 
+function showReviewPopup() {
+    $('#review-popup').fadeIn();
+}
+
+function hideReviewPopup() {
+    $('#review-popup').fadeOut();
+    localStorage.setItem('lastReviewPopupTime', new Date().getTime());
+}
+
 $(document).ready(function() {
     readTextFile("https://multicinema.in/movielist.json");
 
@@ -463,6 +533,26 @@ $(document).ready(function() {
         if (!$(event.target).closest('#share-tab, #share-popup').length) {
             $('#share-popup').hide();
         }
+    });
+
+    // Show review popup after 1 minute
+    setTimeout(function() {
+        var lastReviewPopupTime = localStorage.getItem('lastReviewPopupTime');
+        var currentTime = new Date().getTime();
+        if (!lastReviewPopupTime || (currentTime - lastReviewPopupTime) > 3600000) {
+            showReviewPopup();
+        }
+    }, 60000);
+
+    // Review popup close button
+    $('#review-popup-close').on('click', function() {
+        hideReviewPopup();
+    });
+
+    // Redirect to Play Store
+    $('#go-to-play-store').on('click', function() {
+        window.open('https://play.google.com/store/apps/details?id=com.test.android', '_blank');
+        hideReviewPopup();
     });
 });
     </script>
