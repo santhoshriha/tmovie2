@@ -59,7 +59,7 @@
         }
 
         .search-bar input[type="text"]:focus {
-            width: 80%;
+            width: 70%;
             outline: none;
         }
 
@@ -84,7 +84,15 @@
             width: 100%;
             height: 250px; /* Fixed height for the image */
             transition: opacity 0.3s ease;
+			
         }
+		.delete-favorite {
+    position: absolute;
+    top: 10px;
+    right: 40px;
+    cursor: pointer;
+    color: red;
+}
 
         .album__cover img {
             width: 100%;
@@ -317,135 +325,146 @@
     <script src="main.js" defer></script>
     
     <script>
-        function readTextFile(file) {
-            var rawFile = new XMLHttpRequest();
-            rawFile.overrideMimeType("application/json");
-            rawFile.open("GET", file, false);
-            rawFile.onreadystatechange = function () {
-                if (rawFile.readyState === 4 && rawFile.status === 200) {
-                    movies = JSON.parse(rawFile.responseText);
-                }
-            }
-            rawFile.send(null);
+function readTextFile(file) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function () {
+        if (rawFile.readyState === 4 && rawFile.status === 200) {
+            movies = JSON.parse(rawFile.responseText);
         }
+    }
+    rawFile.send(null);
+}
 
-        var movies = [];
-        var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        var moviesPerPage = 50;
-        var currentPage = 1;
+var movies = [];
+var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+var moviesPerPage = 50;
+var currentPage = 1;
 
-        function displayMovies(movies, page) {
-            var start = (page - 1) * moviesPerPage;
-            var end = start + moviesPerPage;
-            var moviesToDisplay = movies.slice(start, end);
+function displayMovies(movies, page) {
+    var start = (page - 1) * moviesPerPage;
+    var end = start + moviesPerPage;
+    var moviesToDisplay = movies.slice(start, end);
 
-            jQuery.each(moviesToDisplay, function (index, movie) {
-                var isFavorite = favorites.includes(movie.id) ? 'favorite' : '';
-                var Mdiv = 
-                `<div class="col-6 col-sm-4 col-lg-2">
-                    <div class="album">
-                        <div class="album__cover">
-                            <img src="https://multicinema.in/${movie.pic}" alt="Movie Image">
-                            <a href="https://peipadam.com/tml/release.php?id=${movie.id}&target=external" target="_blank">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="album__title">
-                            <h3>
-                                <a href="https://peipadam.com/tml/release.php?id=${movie.id}&target=external" target="_blank">${movie.title}</a>
-                            </h3>
-                        </div>
-                        <img src="https://img.icons8.com/ios-filled/50/000000/like.png" class="favorite-heart ${isFavorite}" data-id="${movie.id}">
-                    </div>
-                </div>`;
-                $("#test").append(Mdiv);
-            });
+    jQuery.each(moviesToDisplay, function (index, movie) {
+        var isFavorite = favorites.includes(movie.id) ? 'favorite' : '';
+        var deleteIcon = `<i class="fas fa-trash delete-favorite" data-id="${movie.id}" style="position: absolute; top: 10px; right: 40px; cursor: pointer; color: red;"></i>`;
+        var Mdiv = 
+        `<div class="col-6 col-sm-4 col-lg-2">
+            <div class="album">
+                <div class="album__cover">
+                    <img src="https://multicinema.in/${movie.pic}" alt="Movie Image">
+                    <a href="https://peipadam.com/tml/release.php?id=${movie.id}&target=external" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"/>
+                        </svg>
+                    </a>
+                    ${isFavorite ? deleteIcon : ''}
+                </div>
+                <div class="album__title">
+                    <h3>
+                        <a href="https://peipadam.com/tml/release.php?id=${movie.id}&target=external" target="_blank">${movie.title}</a>
+                    </h3>
+                </div>
+                <img src="https://img.icons8.com/ios-filled/50/000000/like.png" class="favorite-heart ${isFavorite}" data-id="${movie.id}">
+            </div>
+        </div>`;
+        $("#test").append(Mdiv);
+    });
 
-            // Hide the Load More button if there are no more movies to load
-            if (end >= movies.length) {
-                $('#load-more-button').hide();
-            } else {
-                $('#load-more-button').show();
-            }
-        }
+    // Hide the Load More button if there are no more movies to load
+    if (end >= movies.length) {
+        $('#load-more-button').hide();
+    } else {
+        $('#load-more-button').show();
+    }
+}
 
-        function displayFavorites() {
-            $('#test').empty();
-            var favoriteMovies = movies.filter(movie => favorites.includes(movie.id));
-            displayMovies(favoriteMovies, 1);
-        }
+function displayFavorites() {
+    $('#test').empty();
+    var favoriteMovies = movies.filter(movie => favorites.includes(movie.id));
+    displayMovies(favoriteMovies, 1);
+}
 
-        function showPopupMessage(message) {
-            var popup = $('#popup-message');
-            popup.text(message);
-            popup.fadeIn();
+function showPopupMessage(message) {
+    var popup = $('#popup-message');
+    popup.text(message);
+    popup.fadeIn();
 
-            setTimeout(function() {
-                popup.fadeOut();
-            }, 2000); // Hide after 2 seconds
-        }
+    setTimeout(function() {
+        popup.fadeOut();
+    }, 2000); // Hide after 2 seconds
+}
 
-        $(document).ready(function() {
-            readTextFile("https://multicinema.in/movielist.json");
+$(document).ready(function() {
+    readTextFile("https://multicinema.in/movielist.json");
 
-            // Display the first batch of movies
-            displayMovies(movies, currentPage);
+    // Display the first batch of movies
+    displayMovies(movies, currentPage);
 
-            // Load more movies on button click
-            $('#load-more-button').on('click', function() {
-                currentPage++;
-                displayMovies(movies, currentPage);
-            });
+    // Load more movies on button click
+    $('#load-more-button').on('click', function() {
+        currentPage++;
+        displayMovies(movies, currentPage);
+    });
 
-            // Search functionality
-            $('#search-input').on('input', function() {
-                var searchText = $(this).val().toLowerCase();
-                var filteredMovies = movies.filter(function(movie) {
-                    return movie.title.toLowerCase().includes(searchText);
-                });
-                $('#test').empty();
-                currentPage = 1;
-                displayMovies(filteredMovies, currentPage);
-            });
-
-            // Add to favorites
-            $(document).on('click', '.favorite-heart', function() {
-                var movieId = $(this).data('id');
-                if (favorites.includes(movieId)) {
-                    favorites = favorites.filter(id => id !== movieId);
-                    $(this).removeClass('favorite');
-                } else {
-                    favorites.push(movieId);
-                    $(this).addClass('favorite');
-                    showPopupMessage("Added to favorite");
-                }
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-            });
-
-            // Tab navigation
-            $('#home-tab').on('click', function() {
-                $('#main-content').show();
-                $('#test').empty();
-                displayMovies(movies, 1);
-            });
-
-            $('#favorites-tab').on('click', function() {
-                $('#main-content').show();
-                displayFavorites();
-            });
-
-            $('#share-tab').on('click', function() {
-                $('#share-popup').toggle();
-            });
-
-            $(document).click(function(event) {
-                if (!$(event.target).closest('#share-tab, #share-popup').length) {
-                    $('#share-popup').hide();
-                }
-            });
+    // Search functionality
+    $('#search-input').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        var filteredMovies = movies.filter(function(movie) {
+            return movie.title.toLowerCase().includes(searchText);
         });
+        $('#test').empty();
+        currentPage = 1;
+        displayMovies(filteredMovies, currentPage);
+    });
+
+    // Add to favorites
+    $(document).on('click', '.favorite-heart', function() {
+        var movieId = $(this).data('id');
+        if (favorites.includes(movieId)) {
+            favorites = favorites.filter(id => id !== movieId);
+            $(this).removeClass('favorite');
+        } else {
+            favorites.push(movieId);
+            $(this).addClass('favorite');
+            showPopupMessage("Added to favorite");
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    });
+
+    // Delete from favorites
+    $(document).on('click', '.delete-favorite', function() {
+        var movieId = $(this).data('id');
+        favorites = favorites.filter(id => id !== movieId);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        displayFavorites();
+        showPopupMessage("Video deleted");
+    });
+
+    // Tab navigation
+    $('#home-tab').on('click', function() {
+        $('#main-content').show();
+        $('#test').empty();
+        displayMovies(movies, 1);
+    });
+
+    $('#favorites-tab').on('click', function() {
+        $('#main-content').show();
+        displayFavorites();
+    });
+
+    $('#share-tab').on('click', function() {
+        $('#share-popup').toggle();
+    });
+
+    $(document).click(function(event) {
+        if (!$(event.target).closest('#share-tab, #share-popup').length) {
+            $('#share-popup').hide();
+        }
+    });
+});
     </script>
 </body>
 </html>
