@@ -26,7 +26,16 @@
     <meta name="keywords" content="">
     <meta name="author" content="Dmitry Volkov">
 
-   
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFPDFK8N4V"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-RFPDFK8N4V');
+    </script>
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -40,7 +49,7 @@
         }
 
         .search-bar input[type="text"] {
-            width: 70%;
+            width: 60%;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ced4da;
@@ -50,7 +59,7 @@
         }
 
         .search-bar input[type="text"]:focus {
-            width: 90%;
+            width: 80%;
             outline: none;
         }
 
@@ -132,8 +141,8 @@
 
         .favorite-heart {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 20px;
+            right: 20px;
             width: 24px;
             height: 24px;
             cursor: pointer;
@@ -236,6 +245,20 @@
                 margin: 5px 0;
             }
         }
+
+        .popup-message {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -278,6 +301,9 @@
         <a href="https://wa.me/?text=Check%20out%20this%20website!" target="_blank">WhatsApp</a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https://your-website.com" target="_blank">Facebook</a>
     </div>
+
+    <!-- Popup Message -->
+    <div class="popup-message" id="popup-message">Added to favorite</div>
 
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -351,6 +377,16 @@
             displayMovies(favoriteMovies, 1);
         }
 
+        function showPopupMessage(message) {
+            var popup = $('#popup-message');
+            popup.text(message);
+            popup.fadeIn();
+
+            setTimeout(function() {
+                popup.fadeOut();
+            }, 2000); // Hide after 2 seconds
+        }
+
         $(document).ready(function() {
             readTextFile("https://multicinema.in/movielist.json");
 
@@ -383,6 +419,7 @@
                 } else {
                     favorites.push(movieId);
                     $(this).addClass('favorite');
+                    showPopupMessage("Added to favorite");
                 }
                 localStorage.setItem('favorites', JSON.stringify(favorites));
             });
